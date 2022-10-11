@@ -22,7 +22,9 @@ namespace CD.Api.Controllers
 
         public async Task<ActionResult<IEnumerable<FornecedorViewModel>>> ObterTodos()
         {
+            var fornecedor = await _fornecedorRepository.ObterTodos();
 
+            return Ok(fornecedor);
         }
     }
 
