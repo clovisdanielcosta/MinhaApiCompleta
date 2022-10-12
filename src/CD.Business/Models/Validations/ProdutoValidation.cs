@@ -2,7 +2,7 @@
 
 namespace CD.Business.Models.Validations
 {
-    internal class ProdutoValidation : AbstractValidator<Produto>
+    public class ProdutoValidation : AbstractValidator<Produto>
     {
         public ProdutoValidation()
         {
