@@ -1,4 +1,5 @@
 ﻿using CD.Business.Interfaces;
+using CD.Business.Services;
 using CD.Data.Context;
 using CD.Data.Repository;
 
@@ -10,6 +11,7 @@ namespace CD.Api.Configuration
         {
             services.AddScoped<MeuDbContext>();
             services.AddScoped<IFornecedorRepository, FornecedorRepository>();
+            services.AddScoped<IFornecedorService, FornecedorService>();
 
             return services;
         }
