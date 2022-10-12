@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
 using CD.Business.Interfaces;
 using CD.Business.Models;
-using CD.Data.Repository;
 using Microsoft.AspNetCore.Mvc;
 using MinhaAPICompleta.ViewModels;
-using System.Collections.Generic;
 
 namespace CD.Api.Controllers
 {
@@ -41,11 +39,6 @@ namespace CD.Api.Controllers
             return fornecedor;
         }
 
-        public async Task<FornecedorViewModel> ObterFornecedorProdutosEndereco(Guid id)
-        {
-            return _mapper.Map<FornecedorViewModel>(await _fornecedorRepository.ObterFornecedorProdutosEndereco(id));
-        }
-
         [HttpPost]
         public async Task<ActionResult<FornecedorViewModel>> Adicionar(FornecedorViewModel fornecedorViewModel)
         {
@@ -73,6 +66,29 @@ namespace CD.Api.Controllers
 
             return Ok(fornecedor);
         }
-    }
 
+        [HttpDelete("{id:guid}")]
+        public async Task<ActionResult<FornecedorViewModel>> Excluir(Guid id)
+        {
+            var fornecedor = await ObterFornecedorEndereco(id);
+
+            if (fornecedor == null) return BadRequest();
+
+            var result = await _fornecedorService.Remover(id);
+
+            if (!result) return BadRequest();
+
+            return Ok(fornecedor);
+        }
+
+        public async Task<FornecedorViewModel> ObterFornecedorProdutosEndereco(Guid id)
+        {
+            return _mapper.Map<FornecedorViewModel>(await _fornecedorRepository.ObterFornecedorProdutosEndereco(id));
+        }
+
+        public async Task<FornecedorViewModel> ObterFornecedorEndereco(Guid id)
+        {
+            return _mapper.Map<FornecedorViewModel>(await _fornecedorRepository.ObterFornecedorEndereco(id));
+        }
+    }
 }

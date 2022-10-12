@@ -6,7 +6,7 @@ namespace CD.Business.Interfaces
     {
         Task<bool> Adicionar(Fornecedor fornecedor);
         Task<bool> Atualizar(Fornecedor fornecedor);
-        Task Remover(Guid id);
+        Task<bool> Remover(Guid id);
         Task AtualizarEndereco(Endereco endereco);
     }
 }
