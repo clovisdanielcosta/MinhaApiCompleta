@@ -11,10 +11,10 @@ namespace CD.Data.Mappings
             builder.ToTable("Fornecedores");
 
             builder.HasKey(p => p.Id);
-            builder.Property(p => p.Nome).IsRequired().HasColumnType("varchar(200)");
-            builder.Property(p => p.Documento).IsRequired().HasColumnType("varchar(14)");
-            builder.HasOne(p => p.Endereco).WithOne(p => p.Fornecedor);
-            builder.HasMany(f => f.Produtos).WithOne(p => p.Fornecedor).HasForeignKey(p => p.FornecedorId);
+            builder.Property(p => p.Nome)       .IsRequired().HasColumnType("varchar(200)");
+            builder.Property(p => p.Documento)  .IsRequired().HasColumnType("varchar(14)");
+            builder.HasOne(f => f.Endereco)     .WithOne(e => e.Fornecedor);
+            builder.HasMany(f => f.Produtos)    .WithOne(p => p.Fornecedor).HasForeignKey(p => p.FornecedorId);
         }
     }
 }
