@@ -15,19 +15,19 @@ namespace CD.Business.Services
             _enderecoRepository = enderecoRepository;
         }
 
-        public async Task Adicionar(Fornecedor fornecedor)
+        public async Task<bool> Adicionar(Fornecedor fornecedor)
         {
             if (!ExecutarValidacao(new FornecedorValidation(), fornecedor)
-                || !ExecutarValidacao(new EnderecoValidation(), fornecedor.Endereco)) return;
+                || !ExecutarValidacao(new EnderecoValidation(), fornecedor.Endereco)) return false;
 
             if (_fornecedorRepository.Buscar(f => f.Documento == fornecedor.Documento).Result.Any())
             {
                 Notificar("Já existe um fornecedor com este documento informado");
-                return;
+                return false;
             }
 
             await _fornecedorRepository.Adicionar(fornecedor);
-            return;
+            return true;
         }
 
         public async Task Atualizar(Fornecedor fornecedor)
