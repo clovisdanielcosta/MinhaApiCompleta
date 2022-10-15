@@ -89,7 +89,7 @@ namespace CD.Api.Controllers
             
         }
 
-        [HttpGet("atualizar-endereco/{id:guid}")]
+        [HttpPut("atualizar-endereco/{id:guid}")]
         public async Task<IActionResult> AtualizarEndereco(Guid id, EnderecoViewModel enderecoViewModel)
         {
             if (id != enderecoViewModel.Id)
