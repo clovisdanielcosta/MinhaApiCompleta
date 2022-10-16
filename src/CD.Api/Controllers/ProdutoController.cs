@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CD.Business.Interfaces;
+using CD.Business.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 using MinhaAPICompleta.ViewModels;
@@ -39,6 +40,16 @@ namespace CD.Api.Controllers
             return produtoViewModel;
         }
 
+        [HttpPost]
+        public async Task<ActionResult<ProdutoViewModel>> Adicionar(ProdutoViewModel produtoViewModel)
+        {
+            if (!ModelState.IsValid) return CustomResponse(ModelState);
+
+            await _produtoService.Adicionar(_mapper.Map<Produto>(produtoViewModel));
+
+            return CustomResponse(produtoViewModel);
+        }
+
         [HttpDelete("id:guid")]
         public async Task<ActionResult> Excluir(Guid id)
         {
@@ -49,6 +60,30 @@ namespace CD.Api.Controllers
             await _produtoService.Remover(id);
 
             return CustomResponse(produtoViewModel);
+        }
+
+        public bool UploadArquivo(string arquivo, string imgNome)
+        {
+            var imageDataByteArray = Convert.FromBase64String(arquivo);
+
+            if (string.IsNullOrEmpty(imgNome))
+            {
+                NotificarErro("Forneça uma imagem para este produto!");
+                return false;
+            }
+
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/imagens", imgNome);
+
+            if (System.IO.File.Exists(filePath))
+            {
+                NotificarErro("Já exite um arquivo com este nome!");
+                return false;
+            }
+
+            System.IO.File.WriteAllBytes(filePath, imageDataByteArray);
+            
+            return true;
+
         }
 
         private async Task<ProdutoViewModel> ObterProduto(Guid id)
