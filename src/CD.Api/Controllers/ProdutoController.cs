@@ -39,6 +39,18 @@ namespace CD.Api.Controllers
             return produtoViewModel;
         }
 
+        [HttpDelete("id:guid")]
+        public async Task<ActionResult> Excluir(Guid id)
+        {
+            var produtoViewModel = await ObterProduto(id);
+
+            if (produtoViewModel == null) return NotFound();
+
+            await _produtoService.Remover(id);
+
+            return CustomResponse(produtoViewModel);
+        }
+
         private async Task<ProdutoViewModel> ObterProduto(Guid id)
         {
             return _mapper.Map<ProdutoViewModel>(await _produtoRepository.ObterProdutoFornecedor(id));
