@@ -15,10 +15,10 @@ namespace CD.Api.Controllers
         private readonly IMapper _mapper;
 
         public FornecedoresController(IFornecedorRepository fornecedorRepository,
-                                        IMapper mapper,
-                                        IFornecedorService fornecedorService,
-                                        INotificador notificador,
-                                        IEnderecoRepository enderecoRepository) : base(notificador)
+                                      IMapper mapper,
+                                      IFornecedorService fornecedorService,
+                                      INotificador notificador,
+                                      IEnderecoRepository enderecoRepository) : base(notificador)
         {
             _fornecedorRepository = fornecedorRepository;
             _fornecedorService = fornecedorService;
