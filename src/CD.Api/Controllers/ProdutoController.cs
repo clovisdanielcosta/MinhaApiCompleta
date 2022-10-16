@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using CD.Business.Interfaces;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Mvc;
+using MinhaAPICompleta.ViewModels;
 
 namespace CD.Api.Controllers
 {
@@ -21,6 +23,11 @@ namespace CD.Api.Controllers
             _mapper = mapper;
         }
 
+        [HttpGet]
+        public async Task<IEnumerable<ProdutoViewModel>> ObterTodos()
+        {
+            return _mapper.Map<IEnumerable<ProdutoViewModel>>(await _produtoRepository.ObterProdutosFornecedores());
+        }
 
     }
 }
