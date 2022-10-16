@@ -1,13 +1,12 @@
 ﻿using AutoMapper;
 using CD.Business.Interfaces;
 using CD.Business.Models;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 using MinhaAPICompleta.ViewModels;
 
 namespace CD.Api.Controllers
 {
-    [Route("api/[Controller]")]
+    [Route("api/[controller]")]
     public class ProdutoController : MainController
     {
         private readonly IProdutoRepository _produtoRepository;
@@ -73,13 +72,13 @@ namespace CD.Api.Controllers
 
         public bool UploadArquivo(string arquivo, string imgNome)
         {
-            var imageDataByteArray = Convert.FromBase64String(arquivo);
-
-            if (string.IsNullOrEmpty(imgNome))
+            if (string.IsNullOrEmpty(arquivo))
             {
                 NotificarErro("Forneça uma imagem para este produto!");
                 return false;
             }
+
+            var imageDataByteArray = Convert.FromBase64String(arquivo);
 
             var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/imagens", imgNome);
 
