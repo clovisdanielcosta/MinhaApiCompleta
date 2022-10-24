@@ -7,13 +7,13 @@ using MinhaAPICompleta.ViewModels;
 namespace CD.Api.Controllers
 {
     [Route("api/[controller]")]
-    public class ProdutoController : MainController
+    public class ProdutosController : MainController
     {
         private readonly IProdutoRepository _produtoRepository;
         private readonly IProdutoService _produtoService;
         private readonly IMapper _mapper;
 
-        public ProdutoController(IProdutoRepository produtoRepository, 
+        public ProdutosController(IProdutoRepository produtoRepository, 
                                  IProdutoService produtoService, 
                                  IMapper mapper, 
                                  INotificador notificador) : base(notificador)
@@ -29,7 +29,7 @@ namespace CD.Api.Controllers
             return _mapper.Map<IEnumerable<ProdutoViewModel>>(await _produtoRepository.ObterProdutosFornecedores());
         }
 
-        [HttpGet("id:guid")]
+        [HttpGet("{id:guid}")]
         public async Task<ActionResult<ProdutoViewModel>> ObterPorId(Guid id)
         {
             var produtoViewModel = await ObterProduto(id);
@@ -58,7 +58,7 @@ namespace CD.Api.Controllers
             return CustomResponse(produtoViewModel);
         }
 
-        [HttpDelete("id:guid")]
+        [HttpDelete("{id:guid}")]
         public async Task<ActionResult> Excluir(Guid id)
         {
             var produtoViewModel = await ObterProduto(id);
@@ -80,7 +80,7 @@ namespace CD.Api.Controllers
 
             var imageDataByteArray = Convert.FromBase64String(arquivo);
 
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/imagens", imgNome);
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), @"C:\OneDrive\16-Projetos\projetos\.NET\ASPNET\REST_API\MinhaApiCompleta\src\CD.Api\wwwroot\demo-webapi\src\assets", imgNome);
 
             if (System.IO.File.Exists(filePath))
             {
