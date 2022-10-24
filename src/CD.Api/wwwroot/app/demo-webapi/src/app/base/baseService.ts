@@ -52,7 +52,10 @@ export abstract class BaseService {
             errMsg = `${error.status} - ${error.statusText || ''}`;
         }
         else {
-            errMsg = error.message ? error.message : error.toString();
+          if (!error.error.sucess)
+            return throwError(error);
+
+          errMsg = error.message ? error.message : error.toString();
         }
 
         console.error(errMsg);

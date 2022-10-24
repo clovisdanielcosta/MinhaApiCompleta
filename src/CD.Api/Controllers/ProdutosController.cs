@@ -80,7 +80,7 @@ namespace CD.Api.Controllers
 
             var imageDataByteArray = Convert.FromBase64String(arquivo);
 
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), @"C:\OneDrive\16-Projetos\projetos\.NET\ASPNET\REST_API\MinhaApiCompleta\src\CD.Api\wwwroot\demo-webapi\src\assets", imgNome);
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/app/demo-webapi/src/assets", imgNome);
 
             if (System.IO.File.Exists(filePath))
             {
