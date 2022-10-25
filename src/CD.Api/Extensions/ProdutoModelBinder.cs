@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 using MinhaAPICompleta.ViewModels;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace CD.Api.Extensions
 {
@@ -17,7 +18,8 @@ namespace CD.Api.Extensions
             {
                 WriteIndented = true,
                 Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
-                PropertyNameCaseInsensitive = true
+                PropertyNameCaseInsensitive = true,
+                NumberHandling = JsonNumberHandling.AllowReadingFromString
             };
 
             var produtoImagemViewModel = JsonSerializer.Deserialize<ProdutoImagemViewModel>(bindingContext.ValueProvider.GetValue("produto").FirstOrDefault(), serializeOptions);
