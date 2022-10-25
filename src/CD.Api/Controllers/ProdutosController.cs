@@ -77,6 +77,14 @@ namespace CD.Api.Controllers
             return CustomResponse(produtoViewModel);
         }
 
+        [RequestSizeLimit(40000000)]
+        [HttpPost("Imagem")]
+        public async Task<ActionResult> AdicionarImagem(IFormFile file)
+        {
+            return Ok(file);
+        }
+
+
         [HttpDelete("{id:guid}")]
         public async Task<ActionResult> Excluir(Guid id)
         {

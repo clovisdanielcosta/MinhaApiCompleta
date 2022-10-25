@@ -1,8 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
+using Microsoft.AspNetCore.Mvc;
+using CD.Api.Extensions;
 
 namespace MinhaAPICompleta.ViewModels
 {
+    [ModelBinder(BinderType = typeof(ProdutoModelBinder))]
     public class ProdutoImagemViewModel
     {
         [Key]
