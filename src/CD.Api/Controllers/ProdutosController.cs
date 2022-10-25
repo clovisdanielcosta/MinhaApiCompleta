@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CD.Api.Extensions;
 using CD.Business.Interfaces;
 using CD.Business.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -59,7 +60,8 @@ namespace CD.Api.Controllers
         }
 
         [HttpPost("Adicionar")]
-        public async Task<ActionResult<ProdutoViewModel>> AdicionarAlternativo(ProdutoImagemViewModel produtoViewModel)
+        public async Task<ActionResult<ProdutoViewModel>> AdicionarAlternativo(
+            [ModelBinder(BinderType = typeof(ProdutoModelBinder))] ProdutoImagemViewModel produtoViewModel)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
