@@ -65,12 +65,12 @@ namespace CD.Api.Controllers
 
             var imgPrefixo = Guid.NewGuid() + "_";
 
-            if (!UploadArquivo(produtoViewModel.ImagemUpload, imagemNome))
+            if (!await UploadArquivoAlternativo(produtoViewModel.ImagemUpload, imgPrefixo))
             {
-                return CustomResponse(produtoViewModel);
+                return CustomResponse(ModelState);
             }
 
-            produtoViewModel.Imagem = imagemNome;
+            produtoViewModel.Imagem = imgPrefixo + produtoViewModel.ImagemUpload.FileName;
 
             await _produtoService.Adicionar(_mapper.Map<Produto>(produtoViewModel));
 
@@ -114,7 +114,7 @@ namespace CD.Api.Controllers
 
         private async Task<bool> UploadArquivoAlternativo(IFormFile arquivo, string imgPrefixo)
         {
-            if(arquivo == null && arquivo.Length <= 0)
+            if(arquivo == null && arquivo.Length == 0)
             {
                 NotificarErro("Forneça uma imagem para este produto!");
                 return false;
