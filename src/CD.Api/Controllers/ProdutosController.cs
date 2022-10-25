@@ -58,6 +58,25 @@ namespace CD.Api.Controllers
             return CustomResponse(produtoViewModel);
         }
 
+        [HttpPost("Adicionar")]
+        public async Task<ActionResult<ProdutoViewModel>> AdicionarAlternativo(ProdutoViewModel produtoViewModel)
+        {
+            if (!ModelState.IsValid) return CustomResponse(ModelState);
+
+            var imagemNome = Guid.NewGuid() + "_" + produtoViewModel.Imagem;
+
+            if (!UploadArquivo(produtoViewModel.ImagemUpload, imagemNome))
+            {
+                return CustomResponse(produtoViewModel);
+            }
+
+            produtoViewModel.Imagem = imagemNome;
+
+            await _produtoService.Adicionar(_mapper.Map<Produto>(produtoViewModel));
+
+            return CustomResponse(produtoViewModel);
+        }
+
         [HttpDelete("{id:guid}")]
         public async Task<ActionResult> Excluir(Guid id)
         {
@@ -91,7 +110,6 @@ namespace CD.Api.Controllers
             System.IO.File.WriteAllBytes(filePath, imageDataByteArray);
             
             return true;
-
         }
 
         private async Task<ProdutoViewModel> ObterProduto(Guid id)
