@@ -40,4 +40,6 @@ else
 
 app.UseWebApiConfig();
 
+app.UseAuthentication();
+
 app.Run();
