@@ -124,7 +124,7 @@ namespace CD.Api.Controllers
 
         private async Task<bool> UploadArquivoAlternativo(IFormFile arquivo, string imgPrefixo)
         {
-            if(arquivo == null && arquivo.Length == 0)
+            if(arquivo == null || arquivo.Length == 0)
             {
                 NotificarErro("Forneça uma imagem para este produto!");
                 return false;
@@ -135,6 +135,7 @@ namespace CD.Api.Controllers
             if (System.IO.File.Exists(path))
             {
                 NotificarErro("Já existe um arquivo com este nome!");
+                return false;
             }
 
             using (var stream = new FileStream(path, FileMode.Create))

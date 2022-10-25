@@ -407,3 +407,6 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+# Images
+/src/CD.Api/wwwroot/app/demo-webapi/src/assets/
