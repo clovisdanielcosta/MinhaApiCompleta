@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using CD.Business.Interfaces;
 using CD.Business.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MinhaAPICompleta.ViewModels;
 
 namespace CD.Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class FornecedoresController : MainController
     {
@@ -26,6 +28,7 @@ namespace CD.Api.Controllers
             _enderecoRepository = enderecoRepository;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IEnumerable<FornecedorViewModel>> ObterTodos()
         {
