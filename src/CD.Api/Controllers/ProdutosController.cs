@@ -59,11 +59,11 @@ namespace CD.Api.Controllers
         }
 
         [HttpPost("Adicionar")]
-        public async Task<ActionResult<ProdutoViewModel>> AdicionarAlternativo(ProdutoViewModel produtoViewModel)
+        public async Task<ActionResult<ProdutoViewModel>> AdicionarAlternativo(ProdutoImagemViewModel produtoViewModel)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            var imagemNome = Guid.NewGuid() + "_" + produtoViewModel.Imagem;
+            var imgPrefixo = Guid.NewGuid() + "_";
 
             if (!UploadArquivo(produtoViewModel.ImagemUpload, imagemNome))
             {
@@ -89,7 +89,7 @@ namespace CD.Api.Controllers
             return CustomResponse(produtoViewModel);
         }
 
-        public bool UploadArquivo(string arquivo, string imgNome)
+        private bool UploadArquivo(string arquivo, string imgNome)
         {
             if (string.IsNullOrEmpty(arquivo))
             {
@@ -109,6 +109,29 @@ namespace CD.Api.Controllers
 
             System.IO.File.WriteAllBytes(filePath, imageDataByteArray);
             
+            return true;
+        }
+
+        private async Task<bool> UploadArquivoAlternativo(IFormFile arquivo, string imgPrefixo)
+        {
+            if(arquivo == null && arquivo.Length <= 0)
+            {
+                NotificarErro("Forneça uma imagem para este produto!");
+                return false;
+            }
+
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/app/demo-webapi/src/assets", imgPrefixo + arquivo.FileName);
+
+            if (System.IO.File.Exists(path))
+            {
+                NotificarErro("Já existe um arquivo com este nome!");
+            }
+
+            using (var stream = new FileStream(path, FileMode.Create))
+            {
+                await arquivo.CopyToAsync(stream);
+            }
+
             return true;
         }
 
