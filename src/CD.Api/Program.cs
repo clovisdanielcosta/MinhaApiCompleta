@@ -11,15 +11,7 @@ builder.Services.AddDbContext<MeuDbContext>(options =>
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-builder.Services.AddControllers();
-
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("Development",
-        builder => builder.AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader());
-});
+builder.Services.AddWebApiConfig();
 
 builder.Services.ResolveDependencies();
 
@@ -36,15 +28,6 @@ else
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
-
-app.UseCors("Development");
-
-app.UseRouting();
-
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers();
-});
+app.UseWebApiConfig();
 
 app.Run();
