@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CD.Api.Controllers
 {
+    [Route("api")]
     public class AuthController : MainController
     {
         private readonly SignInManager<IdentityUser> _signInManger;
@@ -17,6 +18,7 @@ namespace CD.Api.Controllers
             _userManager = userManager;
         }
 
+        [HttpPost("nova-conta")]
         public async Task<ActionResult> Registrar(RegisterUserViewModel registerUser)
         {
             if(!ModelState.IsValid) return CustomResponse(ModelState);
