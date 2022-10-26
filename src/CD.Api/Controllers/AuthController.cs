@@ -8,13 +8,13 @@ namespace CD.Api.Controllers
     [Route("api")]
     public class AuthController : MainController
     {
-        private readonly SignInManager<IdentityUser> _signInManger;
+        private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
         public AuthController(INotificador notificador, 
                               SignInManager<IdentityUser> signInManger, 
                               UserManager<IdentityUser> userManager) : base(notificador)
         {
-            _signInManger = signInManger;
+            _signInManager = signInManger;
             _userManager = userManager;
         }
 
@@ -34,7 +34,7 @@ namespace CD.Api.Controllers
 
             if (result.Succeeded)
             {
-                await _signInManger.SignInAsync(user, false);
+                await _signInManager.SignInAsync(user, false);
                 return CustomResponse(registerUser);
             }
 
@@ -44,6 +44,27 @@ namespace CD.Api.Controllers
             }
             
             return CustomResponse(registerUser);
+        }
+
+        [HttpPost("entrar")]
+        public async Task<ActionResult> Login(LoginUserViewModel loginUser)
+        {
+            if(!ModelState.IsValid) return CustomResponse(ModelState);
+
+            var result = await _signInManager.PasswordSignInAsync(loginUser.Email, loginUser.Password, false, true);
+
+            if (result.Succeeded)
+            {
+                CustomResponse(loginUser);
+            }
+
+            if (result.IsLockedOut)
+            {
+                NotificarErro("Usuário excedeu o número de tentativas.");
+            }
+
+            NotificarErro("Usuário ou Senha incorretos");
+            return CustomResponse(loginUser);
         }
     }
 }
