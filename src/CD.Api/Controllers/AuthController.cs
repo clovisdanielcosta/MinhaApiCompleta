@@ -55,7 +55,7 @@ namespace CD.Api.Controllers
 
             if (result.Succeeded)
             {
-                CustomResponse(loginUser);
+                return CustomResponse(loginUser);
             }
 
             if (result.IsLockedOut)
