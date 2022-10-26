@@ -9,7 +9,8 @@
             services.AddCors(options =>
             {
                 options.AddPolicy("Development",
-                    builder => builder.AllowAnyOrigin()
+                    builder => builder
+                        .AllowAnyOrigin()
                         .AllowAnyMethod()
                         .AllowAnyHeader());
             });
@@ -24,6 +25,8 @@
             app.UseCors("Development");
 
             app.UseRouting();
+
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
