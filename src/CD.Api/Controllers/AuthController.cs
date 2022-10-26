@@ -60,7 +60,8 @@ namespace CD.Api.Controllers
 
             if (result.IsLockedOut)
             {
-                NotificarErro("Usuário excedeu o número de tentativas.");
+                NotificarErro("Usuário temporariamente bloqueado por excesso de tentativas.");
+                return CustomResponse(loginUser);
             }
 
             NotificarErro("Usuário ou Senha incorretos");
