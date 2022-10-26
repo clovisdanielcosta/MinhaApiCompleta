@@ -1,6 +1,11 @@
-﻿namespace CD.Api.Controllers
+﻿using CD.Business.Interfaces;
+
+namespace CD.Api.Controllers
 {
-    public class AuthController
+    public class AuthController : MainController
     {
+        public AuthController(INotificador notificador) : base(notificador)
+        {
+        }
     }
 }
