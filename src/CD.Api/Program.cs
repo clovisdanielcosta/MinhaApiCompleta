@@ -38,8 +38,8 @@ else
     app.UseHsts();
 }
 
-app.UseWebApiConfig();
-
 app.UseAuthentication();
+
+app.UseWebApiConfig();
 
 app.Run();
