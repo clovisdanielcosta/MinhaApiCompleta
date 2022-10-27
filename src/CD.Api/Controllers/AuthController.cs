@@ -22,7 +22,8 @@ namespace CD.Api.Controllers
         public AuthController(INotificador notificador,
                               SignInManager<IdentityUser> signInManger,
                               UserManager<IdentityUser> userManager,
-                              IOptions<AppSetttings> appSetttings) : base(notificador)
+                              IOptions<AppSetttings> appSetttings,
+                              IUser user) : base(notificador, user)
         {
             _signInManager = signInManger;
             _userManager = userManager;
