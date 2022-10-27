@@ -17,7 +17,7 @@ namespace CD.Api.Controllers
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly AppSetttings _appSetttings;
+        private readonly AppSetttings _appSettings;
 
         public AuthController(INotificador notificador,
                               SignInManager<IdentityUser> signInManger,
@@ -26,7 +26,7 @@ namespace CD.Api.Controllers
         {
             _signInManager = signInManger;
             _userManager = userManager;
-            _appSetttings = appSetttings.Value;
+            _appSettings = appSetttings.Value;
         }
 
         [HttpPost("nova-conta")]
@@ -99,18 +99,31 @@ namespace CD.Api.Controllers
             identityClaims.AddClaims(claims);
 
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_appSetttings.Secret);
+            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
             var token = tokenHandler.CreateToken(new SecurityTokenDescriptor
             {
-                Issuer = _appSetttings.Emissor,
-                Audience = _appSetttings.ValidoEm,
+                Issuer = _appSettings.Emissor,
+                Audience = _appSettings.ValidoEm,
                 Subject = identityClaims,
-                Expires = DateTime.UtcNow.AddHours(_appSetttings.ExpiracaoHoras),
+                Expires = DateTime.UtcNow.AddHours(_appSettings.ExpiracaoHoras),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
             });
             
             var encodedToken = tokenHandler.WriteToken(token);
-            return encodedToken;
+
+            var response = new LoginResponseViewModel
+            {
+                AccessToken = encodedToken,
+                ExpiresIn = TimeSpan.FromHours(_appSettings.ExpiracaoHoras).TotalSeconds,
+                UserToken = new UserTokenViewModel
+                {
+                    Id = user.Id,
+                    Email = user.Email,
+                    Claims = claims.Select(c => new ClaimViewModel { Type = c.Type, Value = c.Value })
+                }
+            };
+
+            return response;
         }
 
         private static long ToUnixEpochDate(DateTime date)
