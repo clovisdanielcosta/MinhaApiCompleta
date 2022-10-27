@@ -1,4 +1,5 @@
-﻿using CD.Business.Interfaces;
+﻿using CD.Api.Extensions;
+using CD.Business.Interfaces;
 using CD.Business.Notifications;
 using CD.Business.Services;
 using CD.Data.Context;
@@ -20,6 +21,9 @@ namespace CD.Api.Configuration
 
             services.AddScoped<IFornecedorService, FornecedorService>();
             services.AddScoped<IProdutoService, ProdutoService>();
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<IUser, AspNetUser>();
 
             return services;
         }
