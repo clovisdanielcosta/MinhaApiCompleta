@@ -4,6 +4,10 @@ using CD.Business.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace CD.Api.Controllers
 {
@@ -72,6 +76,22 @@ namespace CD.Api.Controllers
 
             NotificarErro("Usuário ou Senha incorretos");
             return CustomResponse(loginUser);
+        }
+
+        private async Task<string> GerarJwt(string email)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_appSetttings.Secret);
+            var token = tokenHandler.CreateToken(new SecurityTokenDescriptor
+            {
+                Issuer = _appSetttings.Emissor,
+                Audience = _appSetttings.ValidoEm,
+                Expires = DateTime.UtcNow.AddHours(_appSetttings.ExpiracaoHoras),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
+            });
+            
+            var encodedToken = tokenHandler.WriteToken(token);
+            return encodedToken;
         }
     }
 }
