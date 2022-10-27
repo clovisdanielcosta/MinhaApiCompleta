@@ -2,11 +2,13 @@
 using CD.Api.Extensions;
 using CD.Business.Interfaces;
 using CD.Business.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MinhaAPICompleta.ViewModels;
 
 namespace CD.Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class ProdutosController : MainController
     {
@@ -40,6 +42,7 @@ namespace CD.Api.Controllers
             return produtoViewModel;
         }
 
+        [ClaimsAuthorize("Produto", "Adicionar")]
         [HttpPost]
         public async Task<ActionResult<ProdutoViewModel>> Adicionar(ProdutoViewModel produtoViewModel)
         {
@@ -59,6 +62,7 @@ namespace CD.Api.Controllers
             return CustomResponse(produtoViewModel);
         }
 
+        [ClaimsAuthorize("Produto", "Adicionar")]
         [HttpPost("Adicionar")]
         public async Task<ActionResult<ProdutoViewModel>> AdicionarAlternativo(
             [ModelBinder(BinderType = typeof(ProdutoModelBinder))] ProdutoImagemViewModel produtoViewModel)
@@ -79,6 +83,7 @@ namespace CD.Api.Controllers
             return CustomResponse(produtoViewModel);
         }
 
+        [ClaimsAuthorize("Produto", "Atualizar")]
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> Atualizar(Guid id, ProdutoViewModel produtoViewModel)
         {
@@ -121,7 +126,7 @@ namespace CD.Api.Controllers
             return Ok(file);
         }
 
-
+        [ClaimsAuthorize("Produto", "Excluir")]
         [HttpDelete("{id:guid}")]
         public async Task<ActionResult> Excluir(Guid id)
         {
