@@ -1,7 +1,9 @@
-﻿using CD.Api.ViewModels;
+﻿using CD.Api.Extensions;
+using CD.Api.ViewModels;
 using CD.Business.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace CD.Api.Controllers
 {
@@ -10,12 +12,16 @@ namespace CD.Api.Controllers
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
-        public AuthController(INotificador notificador, 
-                              SignInManager<IdentityUser> signInManger, 
-                              UserManager<IdentityUser> userManager) : base(notificador)
+        private readonly AppSetttings _appSetttings;
+
+        public AuthController(INotificador notificador,
+                              SignInManager<IdentityUser> signInManger,
+                              UserManager<IdentityUser> userManager,
+                              IOptions<AppSetttings> appSetttings) : base(notificador)
         {
             _signInManager = signInManger;
             _userManager = userManager;
+            _appSetttings = appSetttings.Value;
         }
 
         [HttpPost("nova-conta")]
