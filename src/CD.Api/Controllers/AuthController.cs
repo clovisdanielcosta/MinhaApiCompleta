@@ -45,7 +45,7 @@ namespace CD.Api.Controllers
             if (result.Succeeded)
             {
                 await _signInManager.SignInAsync(user, false);
-                return CustomResponse(registerUser);
+                return CustomResponse(GerarJwt());
             }
 
             foreach (var error in result.Errors)
@@ -65,7 +65,7 @@ namespace CD.Api.Controllers
 
             if (result.Succeeded)
             {
-                return CustomResponse(loginUser);
+                return CustomResponse(GerarJwt());
             }
 
             if (result.IsLockedOut)
