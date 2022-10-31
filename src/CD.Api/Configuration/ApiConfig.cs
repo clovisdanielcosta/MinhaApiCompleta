@@ -49,7 +49,6 @@ namespace CD.Api.Configuration
             {
                 app.UseCors("Development");
                 app.UseDeveloperExceptionPage();
-
             }
             else
             {
