@@ -29,17 +29,8 @@ builder.Services.ResolveDependencies();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage();
-}
-else
-{
-    app.UseHsts();
-}
-
 app.UseAuthentication();
 
-app.UseWebApiConfig();
+app.UseWebApiConfig(app.Environment);
 
 app.Run();

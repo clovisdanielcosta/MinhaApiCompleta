@@ -28,11 +28,21 @@
             return services;
         }
 
-        public static IApplicationBuilder UseWebApiConfig(this WebApplication app)
+        public static IApplicationBuilder UseWebApiConfig(this WebApplication app, IWebHostEnvironment env)
         {
-            app.UseHttpsRedirection();
+            if (env.IsDevelopment())
+            {
+                app.UseCors("Development");
+                app.UseDeveloperExceptionPage();
 
-            app.UseCors("Development");
+            }
+            else
+            {
+                app.UseCors("Production");
+                app.UseHsts();
+            }
+
+            app.UseHttpsRedirection();
 
             app.UseRouting();
 
