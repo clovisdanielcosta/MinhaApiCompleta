@@ -1,4 +1,5 @@
-﻿using CD.Api.Extensions;
+﻿using CD.Api.Controllers;
+using CD.Api.Extensions;
 using CD.Api.ViewModels;
 using CD.Business.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -10,7 +11,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace CD.Api.Controllers
+namespace CD.Api.V1.Controllers
 {
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}")]
@@ -34,7 +35,7 @@ namespace CD.Api.Controllers
         [HttpPost("nova-conta")]
         public async Task<ActionResult> Registrar(RegisterUserViewModel registerUser)
         {
-            if(!ModelState.IsValid) return CustomResponse(ModelState);
+            if (!ModelState.IsValid) return CustomResponse(ModelState);
 
             var user = new IdentityUser
             {
@@ -55,14 +56,14 @@ namespace CD.Api.Controllers
             {
                 NotificarErro(error.Description);
             }
-            
+
             return CustomResponse(registerUser);
         }
 
         [HttpPost("entrar")]
         public async Task<ActionResult> Login(LoginUserViewModel loginUser)
         {
-            if(!ModelState.IsValid) return CustomResponse(ModelState);
+            if (!ModelState.IsValid) return CustomResponse(ModelState);
 
             var result = await _signInManager.PasswordSignInAsync(loginUser.Email, loginUser.Password, false, true);
 
@@ -110,7 +111,7 @@ namespace CD.Api.Controllers
                 Expires = DateTime.UtcNow.AddHours(_appSettings.ExpiracaoHoras),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
             });
-            
+
             var encodedToken = tokenHandler.WriteToken(token);
 
             var response = new LoginResponseViewModel

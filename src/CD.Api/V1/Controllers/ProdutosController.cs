@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CD.Api.Controllers;
 using CD.Api.Extensions;
 using CD.Business.Interfaces;
 using CD.Business.Models;
@@ -6,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MinhaAPICompleta.ViewModels;
 
-namespace CD.Api.Controllers
+namespace CD.Api.V1.Controllers
 {
     [Authorize]
     [ApiVersion("1.0")]
@@ -17,8 +18,8 @@ namespace CD.Api.Controllers
         private readonly IProdutoService _produtoService;
         private readonly IMapper _mapper;
 
-        public ProdutosController(IProdutoRepository produtoRepository, 
-                                 IProdutoService produtoService, 
+        public ProdutosController(IProdutoRepository produtoRepository,
+                                 IProdutoService produtoService,
                                  IMapper mapper,
                                  INotificador notificador,
                                  IUser user) : base(notificador, user)
@@ -52,7 +53,7 @@ namespace CD.Api.Controllers
 
             var imagemNome = Guid.NewGuid() + "_" + produtoViewModel.Imagem;
 
-            if(!UploadArquivo(produtoViewModel.ImagemUpload, imagemNome))
+            if (!UploadArquivo(produtoViewModel.ImagemUpload, imagemNome))
             {
                 return CustomResponse(produtoViewModel);
             }
@@ -160,13 +161,13 @@ namespace CD.Api.Controllers
             }
 
             System.IO.File.WriteAllBytes(filePath, imageDataByteArray);
-            
+
             return true;
         }
 
         private async Task<bool> UploadArquivoAlternativo(IFormFile arquivo, string imgPrefixo)
         {
-            if(arquivo == null || arquivo.Length == 0)
+            if (arquivo == null || arquivo.Length == 0)
             {
                 NotificarErro("Forneça uma imagem para este produto!");
                 return false;

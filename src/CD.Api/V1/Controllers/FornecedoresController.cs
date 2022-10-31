@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CD.Api.Controllers;
 using CD.Api.Extensions;
 using CD.Business.Interfaces;
 using CD.Business.Models;
@@ -6,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MinhaAPICompleta.ViewModels;
 
-namespace CD.Api.Controllers
+namespace CD.Api.V1.Controllers
 {
     [Authorize]
     [ApiVersion("1.0")]
@@ -36,7 +37,7 @@ namespace CD.Api.Controllers
         public async Task<IEnumerable<FornecedorViewModel>> ObterTodos()
         {
             var fornecedor = _mapper.Map<IEnumerable<FornecedorViewModel>>(await _fornecedorRepository.ObterTodos());
-            
+
             return fornecedor;
         }
 
@@ -45,7 +46,7 @@ namespace CD.Api.Controllers
         {
             var fornecedor = await ObterFornecedorProdutosEndereco(id);
 
-            if(fornecedor == null) return NotFound();
+            if (fornecedor == null) return NotFound();
 
             return fornecedor;
         }
@@ -55,7 +56,7 @@ namespace CD.Api.Controllers
         public async Task<ActionResult<FornecedorViewModel>> Adicionar(FornecedorViewModel fornecedorViewModel)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
-            
+
             await _fornecedorService.Adicionar(_mapper.Map<Fornecedor>(fornecedorViewModel));
 
             return CustomResponse(fornecedorViewModel);
@@ -95,7 +96,7 @@ namespace CD.Api.Controllers
         public async Task<EnderecoViewModel> ObterEnderecoPorId(Guid id)
         {
             return _mapper.Map<EnderecoViewModel>(await _enderecoRepository.ObterPorId(id));
-            
+
         }
 
         [ClaimsAuthorize("Fornecedor", "Atualizer")]
