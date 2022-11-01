@@ -31,6 +31,9 @@ builder.Services.ResolveDependencies();
 
 builder.Services.AddEndpointsApiExplorer();
 
+builder.Services.AddLoggingConfig(builder.Configuration);
+
+
 // Configure app
 
 var app = builder.Build();
@@ -41,5 +44,7 @@ app.UseAuthentication();
 app.UseWebApiConfig(app.Environment);
 
 app.UseSwaggerConfig(apiDescriptionProvider);
+
+app.UseLoggingConfiguration();
 
 app.Run();
