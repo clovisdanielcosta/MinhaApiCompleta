@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CD.Api.Extensions;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CD.Api.Configuration
 {
@@ -55,6 +56,8 @@ namespace CD.Api.Configuration
                 app.UseCors("Production");
                 app.UseHsts();
             }
+
+            app.UseMiddleware<ExceptionMiddleware>();
 
             app.UseHttpsRedirection();
 
