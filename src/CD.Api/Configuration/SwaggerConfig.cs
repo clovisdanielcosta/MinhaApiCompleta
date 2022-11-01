@@ -45,6 +45,7 @@ namespace CD.Api.Configuration
 
         public static IApplicationBuilder UseSwaggerConfig(this IApplicationBuilder app, IApiVersionDescriptionProvider provider)
         {
+            app.UseMiddleware<SwaggerAuthorizedMiddleware>();
             app.UseSwagger();
             app.UseSwaggerUI(
                 options =>
@@ -55,7 +56,6 @@ namespace CD.Api.Configuration
                     }
                 });
 
-            app.UseMiddleware<SwaggerAuthorizedMiddleware>();
 
             return app;
         }
