@@ -20,16 +20,19 @@ namespace CD.Api.V1.Controllers
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly AppSetttings _appSettings;
+        private readonly ILogger<AuthController> _logger;
 
         public AuthController(INotificador notificador,
                               SignInManager<IdentityUser> signInManger,
                               UserManager<IdentityUser> userManager,
                               IOptions<AppSetttings> appSetttings,
-                              IUser user) : base(notificador, user)
+                              IUser user,
+                              ILogger<AuthController> logger) : base(notificador, user)
         {
             _signInManager = signInManger;
             _userManager = userManager;
             _appSettings = appSetttings.Value;
+            _logger = logger;
         }
 
         [HttpPost("nova-conta")]
@@ -69,6 +72,7 @@ namespace CD.Api.V1.Controllers
 
             if (result.Succeeded)
             {
+                _logger.LogInformation($"Usuário {loginUser.Email} logado com sucesso!");
                 return CustomResponse(await GerarJwt(loginUser.Email));
             }
 
