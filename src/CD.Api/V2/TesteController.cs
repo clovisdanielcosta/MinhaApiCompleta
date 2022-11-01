@@ -19,7 +19,7 @@ namespace CD.Api.V2.Controllers
         [HttpGet]
         public string Valor()
         {
-            throw new Exception("Error");
+            //throw new Exception("Error");
 
             try
             {
