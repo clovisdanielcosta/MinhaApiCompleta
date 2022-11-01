@@ -1,5 +1,6 @@
 ﻿using CD.Api.Controllers;
 using CD.Business.Interfaces;
+using Elmah.Io.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CD.Api.V2.Controllers
@@ -18,6 +19,16 @@ namespace CD.Api.V2.Controllers
         [HttpGet]
         public string Valor()
         {
+            try
+            {
+                var i = 0;
+                var result = 42 / i;
+            }
+            catch (DivideByZeroException e)
+            {
+                e.Ship(HttpContext);
+            }
+
             _logger.LogTrace("Log Trace");
             _logger.LogDebug("Log de Debug");
             _logger.LogInformation("Log de Informação");
