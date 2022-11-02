@@ -1,4 +1,6 @@
 ﻿using CD.Api.Extensions;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CD.Api.Configuration

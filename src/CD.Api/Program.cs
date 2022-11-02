@@ -1,5 +1,7 @@
 using CD.Api.Configuration;
 using CD.Data.Context;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Versioning.Conventions;
 using Microsoft.EntityFrameworkCore;
@@ -33,6 +35,11 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddLoggingConfig(builder.Configuration);
 
+builder.Services.AddHealthChecks()
+    .AddSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), name: "BancoSQL");
+builder.Services.AddHealthChecksUI()
+    .AddSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection"));
+
 
 // Configure app
 
@@ -46,5 +53,23 @@ app.UseWebApiConfig(app.Environment);
 app.UseSwaggerConfig(apiDescriptionProvider);
 
 app.UseLoggingConfiguration();
+
+app.MapHealthChecks("/api/hc", new HealthCheckOptions()
+{
+    Predicate = _ => true,
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
+
+app.MapHealthChecksUI(options =>
+{
+    options.UIPath = "/api/hc-ui";
+    options.ResourcesPath = "/api/hc-ui-resources";
+
+    options.UseRelativeApiPath = false;
+    options.UseRelativeResourcesPath = false;
+    options.UseRelativeWebhookPath = false;
+});
+
+
 
 app.Run();
