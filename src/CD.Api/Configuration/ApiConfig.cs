@@ -7,9 +7,22 @@ namespace CD.Api.Configuration
 {
     public static class ApiConfig
     {
-        public static IServiceCollection AddWebApiConfig(this IServiceCollection services)
+        public static IServiceCollection AddApiConfig(this IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddApiVersioning(options =>
+            {
+                options.AssumeDefaultVersionWhenUnspecified = true;
+                options.DefaultApiVersion = new ApiVersion(1, 0);
+                options.ReportApiVersions = true;
+            });
+
+            services.AddVersionedApiExplorer(options =>
+            {
+                options.GroupNameFormat = "'v'VVV";
+                options.SubstituteApiVersionInUrl = true;
+            });
 
             services.AddCors(options =>
             {
@@ -30,23 +43,10 @@ namespace CD.Api.Configuration
                             .AllowAnyHeader());
             });
 
-            services.AddApiVersioning(options =>
-            {
-                options.AssumeDefaultVersionWhenUnspecified = true;
-                options.DefaultApiVersion = new ApiVersion(1, 0);
-                options.ReportApiVersions = true;
-            });
-
-            services.AddVersionedApiExplorer(options =>
-            {
-                options.GroupNameFormat = "'v'VVV";
-                options.SubstituteApiVersionInUrl = true;
-            });
-
             return services;
         }
 
-        public static IApplicationBuilder UseWebApiConfig(this WebApplication app, IWebHostEnvironment env)
+        public static IApplicationBuilder UseApiConfig(this WebApplication app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -65,27 +65,29 @@ namespace CD.Api.Configuration
 
             app.UseRouting();
 
+            app.UseAuthentication();
+
             app.UseAuthorization();
+
+            app.UseStaticFiles();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-            });
+                endpoints.MapHealthChecks("/api/hc", new HealthCheckOptions()
+                {
+                    Predicate = _ => true,
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                });
+                endpoints.MapHealthChecksUI(options =>
+                {
+                    options.UIPath = "/api/hc-ui";
+                    options.ResourcesPath = "/api/hc-ui-resources";
 
-            app.UseHealthChecks("/api/hc", new HealthCheckOptions()
-            {
-                Predicate = _ => true,
-                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-            });
-
-            app.UseHealthChecksUI(options =>
-            {
-                options.UIPath = "/api/hc-ui";
-                options.ResourcesPath = "/api/hc-ui-resources";
-
-                options.UseRelativeApiPath = false;
-                options.UseRelativeResourcesPath = false;
-                options.UseRelativeWebhookPath = false;
+                    options.UseRelativeApiPath = false;
+                    options.UseRelativeResourcesPath = false;
+                    options.UseRelativeWebhookPath = false;
+                });
             });
 
             return app;
