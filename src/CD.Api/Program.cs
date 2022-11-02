@@ -1,4 +1,5 @@
 using CD.Api.Configuration;
+using CD.Api.Extensions;
 using CD.Data.Context;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -36,7 +37,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddLoggingConfig(builder.Configuration);
 
 builder.Services.AddHealthChecks()
+    .AddCheck("Produtos", new SqlServerHealthChecks(builder.Configuration.GetConnectionString("DefaultConnection")))
     .AddSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), name: "BancoSQL");
+
 builder.Services.AddHealthChecksUI()
     .AddSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection"));
 
