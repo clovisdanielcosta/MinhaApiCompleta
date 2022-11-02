@@ -72,6 +72,22 @@ namespace CD.Api.Configuration
                 endpoints.MapControllers();
             });
 
+            app.UseHealthChecks("/api/hc", new HealthCheckOptions()
+            {
+                Predicate = _ => true,
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            });
+
+            app.UseHealthChecksUI(options =>
+            {
+                options.UIPath = "/api/hc-ui";
+                options.ResourcesPath = "/api/hc-ui-resources";
+
+                options.UseRelativeApiPath = false;
+                options.UseRelativeResourcesPath = false;
+                options.UseRelativeWebhookPath = false;
+            });
+
             return app;
         }
     }

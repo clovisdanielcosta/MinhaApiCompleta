@@ -2,7 +2,6 @@
 using Elmah.Io.Extensions.Logging;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace CD.Api.Configuration
 {
@@ -10,10 +9,10 @@ namespace CD.Api.Configuration
     {
         public static IServiceCollection AddLoggingConfig(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddElmahIo(o =>
+            services.AddElmahIo(options =>
             {
-                o.ApiKey = "7f4135736d9a430285069c95d127b942";
-                o.LogId = new Guid("1dff6ca0-c84d-41fe-b1c3-be9104d17237");
+                options.ApiKey = "7f4135736d9a430285069c95d127b942";
+                options.LogId = new Guid("1dff6ca0-c84d-41fe-b1c3-be9104d17237");
             });
 
             //services.AddLogging(builder =>
@@ -44,22 +43,6 @@ namespace CD.Api.Configuration
         public static IApplicationBuilder UseLoggingConfiguration(this IApplicationBuilder app)
         {
             app.UseElmahIo();
-
-            app.UseHealthChecks("/api/hc", new HealthCheckOptions()
-            {
-                Predicate = _ => true,
-                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-            });
-
-            app.UseHealthChecksUI(options =>
-            {
-                options.UIPath = "/api/hc-ui";
-                options.ResourcesPath = "/api/hc-ui-resources";
-
-                options.UseRelativeApiPath = false;
-                options.UseRelativeResourcesPath = false;
-                options.UseRelativeWebhookPath = false;
-            });
 
             return app;
         }
