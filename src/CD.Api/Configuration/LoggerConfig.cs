@@ -2,6 +2,7 @@
 using Elmah.Io.Extensions.Logging;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CD.Api.Configuration
 {
@@ -26,6 +27,11 @@ namespace CD.Api.Configuration
             //});
 
             services.AddHealthChecks()
+                .AddElmahIoPublisher(options =>
+                {
+                options.ApiKey = "7f4135736d9a430285069c95d127b942";
+                options.LogId = new Guid("1dff6ca0-c84d-41fe-b1c3-be9104d17237");
+                })
                 .AddCheck("Produtos", new SqlServerHealthChecks(configuration.GetConnectionString("DefaultConnection")))
                 .AddSqlServer(configuration.GetConnectionString("DefaultConnection"), name: "BancoSQL");
 
