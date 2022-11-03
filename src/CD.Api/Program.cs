@@ -34,11 +34,11 @@ builder.Services.ResolveDependencies();
 // Configure app
 
 var app = builder.Build();
-var apiDescriptionProvider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
+var apiVersionDescriptionProvider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
 
 app.UseApiConfig(app.Environment);
 
-app.UseSwaggerConfig(apiDescriptionProvider);
+app.UseSwaggerConfig(apiVersionDescriptionProvider);
 
 app.UseLoggingConfiguration();
 
