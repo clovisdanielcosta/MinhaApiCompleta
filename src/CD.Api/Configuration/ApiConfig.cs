@@ -24,17 +24,23 @@ namespace CD.Api.Configuration
                 options.SubstituteApiVersionInUrl = true;
             });
 
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
+
             services.AddCors(options =>
             {
                 options.AddPolicy("Development",
-                    builder => 
+                    builder =>
                         builder
-                            .AllowAnyOrigin()
-                            .AllowAnyMethod()
-                            .AllowAnyHeader());
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
+
 
                 options.AddPolicy("Production",
-                    builder => 
+                    builder =>
                         builder
                             .WithMethods("GET")
                             .WithOrigins("http://cd.io")
@@ -46,7 +52,7 @@ namespace CD.Api.Configuration
             return services;
         }
 
-        public static IApplicationBuilder UseApiConfig(this WebApplication app, IWebHostEnvironment env)
+        public static IApplicationBuilder UseApiConfig(this IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -55,7 +61,7 @@ namespace CD.Api.Configuration
             }
             else
             {
-                app.UseCors("Production");
+                app.UseCors("Production"); // Usar apenas nas demos => Configuração Ideal: Production
                 app.UseHsts();
             }
 
@@ -66,7 +72,6 @@ namespace CD.Api.Configuration
             app.UseRouting();
 
             app.UseAuthentication();
-
             app.UseAuthorization();
 
             app.UseStaticFiles();
@@ -88,6 +93,7 @@ namespace CD.Api.Configuration
                     options.UseRelativeResourcesPath = false;
                     options.UseRelativeWebhookPath = false;
                 });
+
             });
 
             return app;
