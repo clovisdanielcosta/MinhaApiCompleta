@@ -72,6 +72,7 @@ namespace CD.Api.Configuration
             app.UseRouting();
 
             app.UseAuthentication();
+
             app.UseAuthorization();
 
             app.UseStaticFiles();
