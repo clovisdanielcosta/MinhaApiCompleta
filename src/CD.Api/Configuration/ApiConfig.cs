@@ -2,6 +2,7 @@
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
 namespace CD.Api.Configuration
 {
@@ -61,7 +62,7 @@ namespace CD.Api.Configuration
             }
             else
             {
-                app.UseCors("Production"); // Usar apenas nas demos => Configuração Ideal: Production
+                app.UseCors("Development"); // Usar apenas nas demos => Configuração Ideal: Production
                 app.UseHsts();
             }
 
