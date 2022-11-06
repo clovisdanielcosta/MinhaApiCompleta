@@ -21,7 +21,7 @@
     },
     "resourceName": {
       "type": "string",
-      "defaultValue": "CD-Rest-Api",
+      "defaultValue": "cdc-rest-api",
       "metadata": {
         "description": "Name of the main resource to be created by this template."
       }

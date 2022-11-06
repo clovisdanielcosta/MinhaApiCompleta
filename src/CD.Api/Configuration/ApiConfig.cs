@@ -62,7 +62,7 @@ namespace CD.Api.Configuration
             }
             else
             {
-                app.UseCors("Development"); // Usar apenas nas demos => Configuração Ideal: Production
+                app.UseCors("Production"); // Usar apenas nas demos => Configuração Ideal: Production
                 app.UseHsts();
             }
 
@@ -77,6 +77,10 @@ namespace CD.Api.Configuration
             app.UseAuthorization();
 
             app.UseStaticFiles();
+
+            var apiVersionDescriptionProvider = app.ApplicationServices.GetRequiredService<IApiVersionDescriptionProvider>();
+
+            app.UseSwaggerConfig(apiVersionDescriptionProvider);
 
             app.UseEndpoints(endpoints =>
             {
