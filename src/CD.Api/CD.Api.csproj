@@ -56,4 +56,12 @@
     <Folder Include="wwwroot\imagens\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="appsettings .Staging.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
