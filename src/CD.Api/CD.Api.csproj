@@ -58,7 +58,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="appsettings .Staging.json">
+    <Content Update="appsettings.Staging.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
