@@ -18,6 +18,11 @@ Web REST API with ASP.NET MVC Core by <b>Desenvolvedor.io</b>
 This repository was created as part of course "Web REST API with ASP.NET Core" by <b>Desenvolvedor.io</b> and it's purpose is building a full API with ASP.NET Core Application with modern, secure and clean code. This is a back-end to an app created in another course (MVC App) which is about a system of Suppliers and Products with Identity authentication, documented with Swagger, monitoring with Elmah.io and deploy on Azure.
 </p>
 
+## :cloud: Deploy
+
+  This repository was deployed on Azure
+  - [https://cd-api.azurewebsites.net/swagger/index.html](https://cd-api.azurewebsites.net/swagger/index.html)
+
 <p align="center">
   <img alt="Gif animado do projeto" src="./img/cd-api.gif" width="100%">
 </p>
